@@ -6,3 +6,4 @@ git tag "$timetag"
 git push origin "$timetag"
 git checkout dev
 git commit -m "revision transfered from stg to prd"
+git push origin prd
