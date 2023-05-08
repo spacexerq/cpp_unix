@@ -1,42 +1,36 @@
-#include "lab2_task.h"
 #include <iostream>
 #include <cmath>
-#include <time.h>
-#include <stdlib.h>
+#include <ctime>
+#include <cstdlib>
 
 using namespace std;
 
-int main()
+double expression(int x)
 {
-    string answer = "y";
-    while (answer == "y")
-    {
-        float x = rand() % 2+100;
-        int n;
-        std::cout << "Enter the number of loops:" << endl;
-        std::cin >> n;
-        if(!std::cin.good())
-        {
-            std::cout << "Thats not int" << endl;
-            return 0;
-        }
-        std::cout << "Thats int" << endl;
-        double res =  func(x, n);
-        std::cout << "Again [y/n]?" << endl;
-        std::cin >> answer;
-    }
+    int result = pow(x,2)-pow(x,2)+x*4-x*5+x+x;
+    return result;
 }
 
-double func(const int &x, const int &n)
+int main()
 {
-    clock_t start = clock();
-    for(int i; i < n; i++)
-    {
-        float res = pow(x, 2) - pow(x, 2) + x * 4 - x * 5 + x + x;
+    string recalculate = "Y";
+    while(recalculate == "Y") {
+        int n;
+        cout << "Enter the number of calculations:";
+        cin >> n;
+        if (cin.get() != (int) '\n') {
+            cout << "Invalid input type, calculation denied";
+            return 0;
+        }
+        clock_t start = clock();
+        for (int i = 0; i <= n; i++) {
+            int x = rand();
+            double res = expression(x);
+        }
+        clock_t end = clock();
+        auto seconds = (double) (end - start) / CLOCKS_PER_SEC;
+        cout << "Time spent for " << n << " calculations is " << seconds << " seconds";
+        cout << "\nEvaluate again? \n[Y/N]\n";
+        cin >> recalculate;
     }
-    clock_t end = clock();
-    double seconds = (double)(end - start) / CLOCKS_PER_SEC;
-    std::cout << seconds << endl;
-    printf("The time: %.5e seconds\n", seconds);
-    return seconds;
 }
