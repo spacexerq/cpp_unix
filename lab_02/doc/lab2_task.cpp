@@ -32,5 +32,10 @@ int main()
         cout << "Time spent for " << n << " calculations is " << seconds << " seconds";
         cout << "\nEvaluate again? \n[Y/N]\n";
         cin >> recalculate;
+        while(1==1){
+            if(recalculate=="Y" or recalculate=="N"){break;}
+            cout << "Try again!\nEvaluate again? \n[Y/N]\n";
+            cin >> recalculate;
+        }
     }
 }
