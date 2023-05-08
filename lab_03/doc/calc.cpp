@@ -21,29 +21,34 @@ double powerF(double a, double b){
 int main() {
     double a, b, result;
     string operatorF;
-    int flag = 0;
+    int flag = -1;
     cout << "Enter the numbers: ";
-    cin >> a >> b;
+    cin >> a >> operatorF >> b;
+    /*
     if (cin.get() != (double) '\n') {
         cout << "Invalid input type, calculation denied";
         return 0;
     }
-    while (flag == 0) {
-        cout << "Enter operator (+, -, ^): ";
-        cin >> operatorF;
-        if (operatorF == "+") {
+     */
+    while (flag != 1) {
+        if(flag==0){
+            cout << "Enter operator (+, -, ^): ";
+            cin >> operatorF;
+        }
+        if (operatorF == "plus") {
             result = plusF(a, b);
             flag = 1;
-        } else if (operatorF == "^") {
+        } else if (operatorF == "power") {
             result = powerF(a, b);
             flag = 1;
-        } else if (operatorF == "-") {
+        } else if (operatorF == "minus") {
             result = minusF(a, b);
             flag = 1;
         } else {
             cout << "Invalid operator, try again!\n";
+            flag =0;
         }
     }
-    cout << "Result:" << result <<"\n";
+    cout << "Result: " << result <<"\n";
     system("pause");
 }
