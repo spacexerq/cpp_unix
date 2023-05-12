@@ -23,7 +23,7 @@ def main():
             print("Invalid input type, calculation denied")
             return 0
         seconds = end - start
-        print("Time spent for ", n, " calculations is ", round(seconds, 5), "seconds")
+        print("Time spent for", n, "calculations is", round(seconds, 5), "seconds")
         print("Evaluate again? \n[Y/N]")
         recalculate = input()
         while 1 == 1:

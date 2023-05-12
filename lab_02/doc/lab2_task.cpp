@@ -16,7 +16,7 @@ int main()
     string recalculate = "Y";
     while(recalculate == "Y") {
         int n;
-        cout << "Enter the number of calculations:";
+        cout << "Enter the number of calculations: ";
         cin >> n;
         if (cin.get() != (int) '\n') {
             cout << "Invalid input type, calculation denied";
