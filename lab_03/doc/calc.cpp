@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -18,37 +19,27 @@ double powerF(double a, double b){
     return result;
 }
 
-int main() {
-    double a, b, result;
-    string operatorF;
-    int flag = -1;
-    cout << "Enter the numbers: ";
-    cin >> a >> operatorF >> b;
-    /*
-    if (cin.get() != (double) '\n') {
-        cout << "Invalid input type, calculation denied";
+int wmain(int argc, wchar_t * argv[]) {
+    double a = _wtoi(argv[1]);
+    double b = _wtoi(argv[3]);
+    double result;
+    wstring operatorF = argv[2];
+    wstring plus(L"plus");
+    wstring minus(L"minus");
+    wstring power(L"power");
+    wstring plusS(L"+");
+    wstring minusS(L"-");
+    wstring powerS(L"^");
+    if (operatorF == plus or operatorF == plusS) {
+        result = plusF(a,b);
+    } else if (operatorF == power or operatorF == powerS) {
+        result = powerF(a,b);
+    } else if (operatorF == minus or operatorF == minusS) {
+        result = minusF(a,b);
+    } else {
+        cout << "Invalid operator!\n";
         return 0;
     }
-     */
-    while (flag != 1) {
-        if(flag==0){
-            cout << "Enter operator (+, -, ^): ";
-            cin >> operatorF;
-        }
-        if (operatorF == "plus") {
-            result = plusF(a, b);
-            flag = 1;
-        } else if (operatorF == "power") {
-            result = powerF(a, b);
-            flag = 1;
-        } else if (operatorF == "minus") {
-            result = minusF(a, b);
-            flag = 1;
-        } else {
-            cout << "Invalid operator, try again!\n";
-            flag =0;
-        }
-    }
     cout << "Result: " << result <<"\n";
-    system("pause");
+    return 0;
 }
