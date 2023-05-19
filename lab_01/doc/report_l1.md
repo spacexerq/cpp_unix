@@ -79,7 +79,7 @@ script executed by user_min_1 user
 
 output.log could not be created in folder_min because already exists made by user_max_1
 
-Its needed to remake permissions to 777 to debug it
+It's needed to remake permissions to 777 to debug it
 ### Task 8
     cd folder_min/
     sudo -u user_min_1 vi script_to_f_max.sh
@@ -87,7 +87,7 @@ Its needed to remake permissions to 777 to debug it
     sudo -u user_min_1 ./script_to_f_max.sh
 
     ./script_to_f_max.sh: 2: cannot create ../folder_max/output.log: Permission denied
-Result: Permission denied (uder_min_1 has no accept to the folder_max)
+Result: Permission denied (user_min_1 has no accept to the folder_max)
 ### Task 9
 All permissions
 
