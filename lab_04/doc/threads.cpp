@@ -1,6 +1,8 @@
 #include <iostream>
 #include <ctime>
 #include <cmath>
+#include <thread>
+#include <future>
 
 using namespace std;
 
@@ -26,9 +28,12 @@ int main(){
         clock_t start = clock();
         for (int i = 0; i <= num_iterations; i++) {
             int x = rand();
-            int f1 = formula1(x);
-            int f2 = formula2(x);
-            int f3 = formula3(f1, f2);
+            auto future1 = async(formula1, x);
+            auto future2 = async(formula2,x);
+            int f1 = future1.get();
+            int f2 = future2.get();
+            auto future3 = async(formula3, f1,f2);
+            int f3 = future3.get();
         }
         clock_t end = clock();
         auto seconds = ((double) (end - start)) / CLOCKS_PER_SEC;
