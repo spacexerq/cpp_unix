@@ -1,8 +1,9 @@
 #include <iostream>
 #include <ctime>
 #include <cmath>
-#include <thread>
 #include <future>
+#include<sys/types.h>
+#include<unistd.h>
 
 using namespace std;
 
@@ -22,18 +23,16 @@ int formula3(int f1, int f2){
 }
 
 int main(){
-    int num_iterations = 1000000;
+    int num_iterations = 10000;
     cout << "Treads paralleling evaluation" << "\n";
-    while(num_iterations < 10000001){
+    while(num_iterations < 100001){
         clock_t start = clock();
         for (int i = 0; i <= num_iterations; i++) {
             int x = rand();
-            auto future1 = async(formula1, x);
-            auto future2 = async(formula2,x);
+            auto future1 = async(launch::async, formula1, x);
+            int f2 = formula2(x);
             int f1 = future1.get();
-            int f2 = future2.get();
-            auto future3 = async(formula3, f1,f2);
-            int f3 = future3.get();
+            int f3 = formula3(f1,f2);
         }
         clock_t end = clock();
         auto seconds = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -42,3 +41,6 @@ int main(){
     }
     return 0;
 }
+
+
+//hardware_concurrency
