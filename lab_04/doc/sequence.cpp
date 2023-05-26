@@ -20,9 +20,9 @@ int formula3(int &f1, int &f2){
 }
 
 int main(){
-    int num_iterations = 10000;
+    int num_iterations = 100000;
     cout << "Sequence evaluation" << "\n";
-    while(num_iterations < 100001){
+    while(num_iterations < 1000001){
         clock_t start = clock();
         for (int i = 0; i <= num_iterations; i++) {
             int x = rand();
