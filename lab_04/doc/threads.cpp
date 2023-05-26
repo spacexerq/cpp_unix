@@ -2,8 +2,6 @@
 #include <ctime>
 #include <cmath>
 #include <future>
-#include<sys/types.h>
-#include<unistd.h>
 
 using namespace std;
 
@@ -12,12 +10,12 @@ int formula1(int x){
     return f;
 }
 
-int formula2(int x){
+int formula2(int &x){
     int f = x+x;
     return f;
 }
 
-int formula3(int f1, int f2){
+int formula3(int &f1, int &f2){
     int f = f1 + f2 - f1;
     return f;
 }
