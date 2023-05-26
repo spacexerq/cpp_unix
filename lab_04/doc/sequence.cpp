@@ -4,25 +4,25 @@
 
 using namespace std;
 
-int formula1(int x){
+int formula1(int &x){
     int f = pow(x,2)- pow(x,2)+ x *4- x *5+ x + x;
     return f;
 }
 
-int formula2(int x){
+int formula2(int &x){
     int f = x+x;
     return f;
 }
 
-int formula3(int f1, int f2){
+int formula3(int &f1, int &f2){
     int f = f1 + f2 - f1;
     return f;
 }
 
 int main(){
-    int num_iterations = 1000000;
+    int num_iterations = 10000;
     cout << "Sequence evaluation" << "\n";
-    while(num_iterations < 10000001){
+    while(num_iterations < 100001){
         clock_t start = clock();
         for (int i = 0; i <= num_iterations; i++) {
             int x = rand();
