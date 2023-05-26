@@ -1,20 +1,45 @@
-# Report. Lab3
+# Report. Lab4
 Бабич Никита Станиславович 312400 Z33434 3 курс
 
 ## Цель
-Познакомить студента с основными алгоритмическими конструкциями, которые будут
-использоваться для создания CLI программы. Далее продемонстрировать
-эффективность использования механизма рекурсии.
-С++ алгоритмы: CLI Калькулятор вещественных чисел +, -, ^, . Реализация с
-использованием только функций, условий, циклов, + и -. Вид команд в консоли: calc
-plus / minus / power; Ханойская башня, результат корректной последовательности
+Познакомить студента с принципами параллельных вычислений. Составить несколько
+программ в простейшими вычислительными действиями, чтобы освоить принципы
+параллельных вычислений (когда одни алгоритмы зависят / не зависят от других).
 
-## Task Calc
+## Task Sequence
 
-CLI interface complete with commands "plus" / "+"; "minus" / "-"; "power" / "^"
+Due to using simple functions, quite fast. Using < chrono > header to control the time.
 
-## Task Hanoi
+    Sequence evaluation
+    Time spent for 10000 calculations is 0.0014969 seconds
+    Time spent for 100000 calculations is 0.0110329 seconds
 
-Recursive algorithm complete by void function
+## Task Threads
 
-Output is testing by theoretical optimal algorithm with $2^n - 1$, if else returns 1
+Using < future > to separate threads. Nevertheless, no optimization gained. The process of initialization of threads is using more time than any improve give. 
+
+    Treads paralleling evaluation
+    Time spent for 10000 calculations is 2.8801 seconds
+    Time spent for 100000 calculations is 27.5155 seconds
+
+## Task Processes
+
+Compiled ny WSL Ubuntu. Using pipe()/fork() functions to separate 2 child processes ("formula 1" and "formula 2" execution)
+
+    C:\windows\system32\wsl.exe --distribution Ubuntu --exec /bin/bash -c
+        "cd /mnt/c/Users/user/cpp_unix1/lab_04/build && /mnt/c/Users/user/cpp_unix1/lab_04/build/multiprocess"
+    Evaluation with parallel processes
+    Time spent for 10000 calculations is 0.000508 seconds
+    Time spent for 100000 calculations is 0.0024819 seconds
+
+## Task Sequence (by Ubuntu)
+
+sequence.cpp code was also complied by WSL Ubuntu, to be sure, that the data is correct.
+
+    C:\windows\system32\wsl.exe --distribution Ubuntu --exec /bin/bash -c
+        "cd /mnt/c/Users/user/cpp_unix1/lab_04/build && /mnt/c/Users/user/cpp_unix1/lab_04/build/sequence"
+    Sequence evaluation
+    Time spent for 10000 calculations is 0.0008834 seconds
+    Time spent for 100000 calculations is 0.008602 seconds
+
+It should be mentioned, that this code is executing faster than code complied by MinGW. But still multiprocessing system has an advantage in time of execution
