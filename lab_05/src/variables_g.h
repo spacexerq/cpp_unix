@@ -6,10 +6,13 @@ class Variables_g {
     //default integer variable
 public:
     virtual void set_variable(std::string name, std::string type, std::string val);
-    int var_get() const;
+    int var_get_val() const;
+    void var_set_val(int a);
+    std::string var_get_name() const;
+    std::string var_get_type() const;
 private:
     //int || string
-    int value {0};
+    int value;
 protected:
     //variable name and type
     std::string var_type {"int"};
@@ -21,7 +24,8 @@ private:
     std::string value;
 public:
     void set_variable(std::string name, std::string type, std::string val);
-    std::string var_get(){return value;}
+    void var_set_val(std::string a);
+    std::string var_get_val(){return value;}
 };
 
 #endif //CPP_UNIX1_VARIABLES_G_H
