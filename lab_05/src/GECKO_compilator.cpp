@@ -4,6 +4,7 @@
 #include <sstream>
 #include <algorithm>
 #include "variables_g.cpp"
+#include <unistd.h>
 
 using namespace std;
 
@@ -13,7 +14,7 @@ vector<string> var_names;
 
 void code_return(const string &error_name, vector<string> text, const string &j) {
     cout << error_name << endl;
-    for (int k = 0; k <= size(text); k++) {
+    for (int k = 0; k < size(text); k++) {
         if (text[k] == j) {
             cout << j << " <- error here";
         }
@@ -114,22 +115,7 @@ void overwrite(const string &name, const string &value) {
     }
 }
 
-int main() {
-    cout << "Welcome to Gecko.alpha!" << endl;
-    cout << "Finish the entering by ~" << endl;
-    cout << "The variables initialization begins from ! vType vName value" << endl;
-    cout << "Changes made by 'V1 = V2 + V3'" << endl;
-    cout << "Loop begins with 'for nReps' and ends with %" << endl;
-    vector<string> text;
-    string input;
-    int i = 0;
-    while (input != "~") {
-        //cout << i;
-        getline(cin, input);
-        text.push_back(input);
-        i++;
-    }
-    text.erase(text.end());
+int compiler(vector <string> text){
     int lines_iterator = 0;
     int len_code = size(text);
     for (int j_it = 0; j_it < len_code; j_it++) {
@@ -218,9 +204,40 @@ int main() {
             int del_end = lines_iterator + (num_repeats + 1) * size(loop_inside) + 2;
             text.erase(text.begin() + del_beg, text.begin() + del_end);
             len_code = size(text);
-
         } else if (line[0] == "*") {
-
+            vector<string> child_inside;
+            int t = 0;
+            int flag_input = 0;
+            string child_sent;
+            while (1 == 1) {
+                if (text[t] == j) {
+                    flag_input = 1;
+                }
+                if (text[t] == "#") {
+                    flag_input = -1;
+                }
+                if (flag_input == 1 and t + 1 < size(text)) {
+                    child_sent = text[t + 1];
+                    child_inside.push_back(child_sent);
+                } else if (flag_input == -1) {
+                    child_inside.pop_back();
+                    break;
+                }
+                t++;
+            }
+            int del_beg_f = lines_iterator;
+            int del_end_f = lines_iterator + size(child_inside) + 2;
+            text.erase(text.begin() + del_beg_f, text.begin() + del_end_f);
+            len_code = size(text);
+            pid_t pid = fork();
+            if(pid==0){
+                compiler(child_inside);
+            }else if(pid ==-1){
+                cerr << "Fork error";
+                return -1;
+            }
+            lines_iterator--;
+            j_it--;
         } else if (line[0] == "~") {
             return 0;
         } else if (line[0] == "print") {
@@ -241,5 +258,26 @@ int main() {
         }
         lines_iterator++;
     }
+}
+
+int main() {
+    cout << "Welcome to Gecko.alpha!" << endl;
+    cout << "Finish the entering by ~" << endl;
+    cout << "The variables initialization begins from ! vType vName value" << endl;
+    cout << "Changes made by 'V1 = V2 + V3'" << endl;
+    cout << "Loop begins with 'for nReps' and ends with %" << endl;
+    cout << "Parallel process begins with '*' and ends with #" << endl << "\n";
+    vector<string> text;
+    string input;
+    int i = 0;
+    while (input != "~") {
+        //cout << i;
+        getline(cin, input);
+        text.push_back(input);
+        i++;
+    }
+    text.erase(text.end());
+    cout << "Output:" << endl;
+    compiler(text);
     return 0;
 }
