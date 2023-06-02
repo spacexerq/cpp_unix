@@ -1,0 +1,18 @@
+! int f1 1
+! int f2 10
+! int f3 15
+! string o_ch child
+! string o_par parent
+*
+for 3
+f2 = f2 + f1
+print f2
+print o_ch
+%
+#
+for 3
+f3 = f1 + f3
+print f3
+print o_par
+%
+~
