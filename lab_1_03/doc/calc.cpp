@@ -3,23 +3,23 @@
 
 using namespace std;
 
-double plusF(double a, double b){
-    return a+b;
+double plusF(double a, double b) {
+    return a + b;
 }
 
-double minusF(double a, double b){
-   return a-b;
+double minusF(double a, double b) {
+    return a - b;
 }
 
-double powerF(double a, double b){
+double powerF(double a, double b) {
     double result = 1;
-    for(int i = 0; i<b; i++){
-        result*=a;
+    for (int i = 0; i < b; i++) {
+        result *= a;
     }
     return result;
 }
 
-int wmain(int argc, wchar_t * argv[]) {
+int wmain(int argc, wchar_t *argv[]) {
     double a = _wtoi(argv[1]);
     double b = _wtoi(argv[3]);
     double result;
@@ -31,15 +31,16 @@ int wmain(int argc, wchar_t * argv[]) {
     wstring minusS(L"-");
     wstring powerS(L"^");
     if (operatorF == plus or operatorF == plusS) {
-        result = plusF(a,b);
+        result = plusF(a, b);
     } else if (operatorF == power or operatorF == powerS) {
-        result = powerF(a,b);
+        result = powerF(a, b);
     } else if (operatorF == minus or operatorF == minusS) {
-        result = minusF(a,b);
+        result = minusF(a, b);
     } else {
         cout << "Invalid operator!\n";
         return 0;
     }
-    cout << "Result: " << result <<"\n";
+    cout << "Result: " << result << "\n";
+    cout << "Проверка";
     return 0;
 }
