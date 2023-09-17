@@ -115,7 +115,7 @@ void overwrite(const string &name, const string &value) {
     }
 }
 
-int compiler(vector <string> text){
+int compiler(vector<string> text) {
     int lines_iterator = 0;
     int len_code = size(text);
     for (int j_it = 0; j_it < len_code; j_it++) {
@@ -230,9 +230,9 @@ int compiler(vector <string> text){
             text.erase(text.begin() + del_beg_f, text.begin() + del_end_f);
             len_code = size(text);
             pid_t pid = fork();
-            if(pid==0){
+            if (pid == 0) {
                 compiler(child_inside);
-            }else if(pid ==-1){
+            } else if (pid == -1) {
                 cerr << "Fork error";
                 return -1;
             }
