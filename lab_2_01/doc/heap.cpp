@@ -8,6 +8,7 @@ using namespace std;
 void heapify(int list[], int listLength, int root)
 {
 	int largest = root;
+    int check_var = 1;
 	int l = 2*root + 1;
 	int r = 2*root + 2;
 	  
