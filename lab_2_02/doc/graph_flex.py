@@ -17,8 +17,6 @@ def fill_rand(len, massive, upp_lim, low_lim):
 len_sample = 10
 low_lim = 0
 upp_lim = 100
-coordinates = []
-coordinates.append([0]*len_sample)
-coordinates.append([0]*len_sample)
+coordinates = [[0] * len_sample, [0] * len_sample]
 coordinates = fill_rand(len_sample, coordinates, upp_lim, low_lim)
 print(coordinates)
