@@ -1,32 +1,132 @@
 import numpy as np
-import random
+import random as rd
 import matplotlib.pyplot as plt
 from scipy import optimize
 from scipy import sparse
 import networkx as nx
 from datetime import datetime
 
+INF = 2 ** 31 - 1
 
-# what does sparse doing?
 
-def TSP_output(points, circles, interceptions):
+def TSP_dynamic(input_matrix, n):
+    s = (1 << (n - 1)) - 1
+    path = [0] * s
+    local_sum = [0] * s
+
+    for i in range(s):
+        path[i] = [0] * (n - 1)
+        local_sum[i] = [-1] * (n - 1)
+
+    m = [n - 1, input_matrix.copy(), path, local_sum]
+
+    sum_path = INF
+    for i in range(m[0]):
+        index = 1 << i
+        if s & index != 0:
+            sum_temp = tsp_next(m, s ^ index, i) + m[1][i + 1][0]
+            if sum_temp < sum_path:
+                sum_path = sum_temp
+                m[2][0][0] = i + 1
+    m[3][0][0] = sum_path
+
+    # Вывод оптимального пути
+    res = []
+    init_point = int(path[0][0])
+    res.append(init_point)
+    s = ((1 << m[0]) - 1) ^ (1 << init_point - 1)
+    for i in range(1, m[0]):
+        init_point = int(path[s][init_point - 1])
+        res.append(init_point)
+        s = s ^ (1 << init_point - 1)
+    res.append(0)
+    return [sum_path, res]
+
+
+def tsp_next(m, s, init_point):
+    if m[3][s][init_point] != -1:
+        return m[3][s][init_point]
+    if s == 0:
+        return m[1][0][init_point + 1]
+    sum_path = INF
+    for i in range(m[0]):
+        index = 1 << i
+        if s & index != 0:
+            sum_temp = tsp_next(m, s ^ index, i) + m[1][i + 1][init_point + 1]
+            if sum_temp < sum_path:
+                sum_path = sum_temp
+                m[2][s][init_point] = i + 1
+    m[3][s][init_point] = sum_path
+    return sum_path
+
+
+def TSP_output_dynamic(sample_points):
+    n = len(sample_points)
+    v1 = []
+    input_matrix1 = []
+    for k1 in range(len_sample):
+        m1 = []
+        p1 = sample_points[k1]
+        for k2 in range(len_sample):
+            p2 = sample_points[k2]
+            if k1 == k2:
+                m1.append(INF)
+            else:
+                m1.append(int(distance(p1, p2)))
+                v1.append([k1, k2, int(distance(p1, p2))])
+        input_matrix1.append(m1.copy())
+
+    init_graph = nx.complete_graph(len_sample)
+    for i, j in init_graph.edges():
+        if j > i:
+            init_graph[i][j]['weight'] = distance(sample_points[i], sample_points[j])
+    adj_matrix = nx.adjacency_matrix(init_graph).todense()
+    points_dict = {}
+    for i in range(n):
+        points_dict[i] = (sample_points[i])
+        adj_matrix[i, i] = INF
+    plt.figure(figsize=(8, 8))
+    graph = nx.Graph()
+    graph.add_nodes_from(points_dict)
+    for i in v1:
+        graph.add_edge(i[0], i[1], weight=i[2])
+
+    start_time = datetime.now()
+    res = TSP_dynamic(adj_matrix, len_sample)
+    print("Dynamic programming")
+    print('time =', (datetime.now() - start_time).total_seconds())
+    print('length =', res[0])
+    d = []
+    s = res[1]
+    for i, v in enumerate(s):
+        d.append([int(s[i - 1]), int(s[i])])
+    nx.draw(graph, sample_points, width=1, edge_color="#C0C0C0", with_labels=True)
+    nx.draw(graph, sample_points, width=2, edge_color="red", edgelist=d, style="dashed", node_size=0)
+    namefile = "C://Users//git//cpp_unix//lab_2_02//image//" + str(len_sample) + "_dynamic.pdf"
+    plt.savefig(namefile)
+    plt.show()
+
+
+def TSP_output_milp(points, circles, interceptions):
     init_graph = nx.complete_graph(len_sample)
     for i, j in init_graph.edges():
         if j > i:
             init_graph[i][j]['weight'] = distance(points[i], points[j])
 
-    plt.figure(figsize=(12, 9))
+    plt.figure(figsize=(8, 8))
     plt.axis("equal")
     start_time = datetime.now()
     res = TSP_milp(init_graph, circles, interceptions, False, False)
     date_diff = (datetime.now() - start_time).total_seconds()
+    print("Optimization MILP")
     print("circles =", circles, ",interceptions =", interceptions)
     print('time =', date_diff)
     print("steps =", res["steps"])
-    print("length =", res["length"])
-    nx.draw(init_graph, points, width=0, with_labels=True, node_size=0, font_size=6, font_color="black")
-    nx.draw(res["graph"], points, width=1, edge_color="red", style="-", with_labels=False, node_size=0)
-    namefile = str(len_sample) + "_pts_" + str(circles) + "_circ_" + str(interceptions) + "_interc.pdf"
+    print("length =", res["length"], "\n")
+    nx.draw(init_graph, points, width=1, edge_color="#C0C0C0", with_labels=True, font_color="black")
+    nx.draw(res["graph"], points, width=2, edge_color="red", style="dashed", node_size=0)
+    namefile = "C://Users//git//cpp_unix//lab_2_02//image//" + str(len_sample) + "_pts_" + str(
+        circles) + "_circ_" + str(interceptions) + "_interc.pdf"
     plt.savefig(namefile)
     plt.show()
 
@@ -158,13 +258,20 @@ def TSP_milp(init_graph, circles, cross, plt_show_flag=False, solver_display=Fal
         # Steps showing
         if plt_show_flag:
             nx.draw(init_graph, points, width=0, with_labels=True, node_size=0, font_size=6, font_color="black")
-            nx.draw(graph_resilt, points, width=1, edge_color="red", style="-", with_labels=False, node_size=0)
+            nx.draw(graph_resilt, points, width=1, edge_color="red", style="dashed", with_labels=False, node_size=0)
             plt.show()
 
     return {'length': res.fun, 'graph': graph_resilt, 'constraints': constraints, 'steps': step}
 
 
-len_sample = 100
-points = [(round(random.randint(0, 300)), round(random.randint(0, 200))) for i in range(len_sample)]
-TSP_output(points, 4, 5)
-TSP_output(points, 2, 2)
+len_sample = 20
+points = [(round(rd.randint(0, 1000)), round(rd.randint(0, 1000))) for i in range(len_sample)]
+# TSP_output_milp(points, 4, 5)
+# TSP_output_milp(points, 2, 2)
+# TSP_output_dynamic(points)
+points2 = [(5, 7), (4, 0), (5, 0), (-1, 0), (0, 0), (0, 2), (0, 3), (2.5, 2.5), (0, 1), (1, 0), (2, 0), (2, 1), (1, 2),
+           (2, 3), (4, 1), (3, 2), (1, 1), (3, 3), (2, 2), (3, 1), (4, 2)]
+len_sample = len(points2)
+TSP_output_milp(points2, 4, 5)
+TSP_output_milp(points2, 2, 2)
+TSP_output_dynamic(points2)
