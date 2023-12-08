@@ -1,1 +1,1 @@
-class Sim_City:
+class SimCity:
