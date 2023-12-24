@@ -102,7 +102,7 @@ def TSP_output_dynamic(sample_points):
         d.append([int(s[i - 1]), int(s[i])])
     nx.draw(graph, sample_points, width=1, edge_color="#C0C0C0", with_labels=True)
     nx.draw(graph, sample_points, width=2, edge_color="red", edgelist=d, style="dashed", node_size=0)
-    namefile = "C://Users//git//cpp_unix//lab_2_02//image//" + str(len_sample) + "_dynamic.pdf"
+    namefile = str(len_sample) + "_dynamic.pdf"
     plt.savefig(namefile)
     plt.show()
 
@@ -116,7 +116,7 @@ def TSP_output_milp(points, circles, interceptions):
     plt.figure(figsize=(8, 8))
     plt.axis("equal")
     start_time = datetime.now()
-    res = TSP_milp(init_graph, circles, interceptions, False, False)
+    res = TSP_milp(init_graph, circles, interceptions, True, False)
     date_diff = (datetime.now() - start_time).total_seconds()
     print("Optimization MILP")
     print("circles =", circles, ",interceptions =", interceptions)
@@ -125,7 +125,7 @@ def TSP_output_milp(points, circles, interceptions):
     print("length =", res["length"], "\n")
     nx.draw(init_graph, points, width=1, edge_color="#C0C0C0", with_labels=True, font_color="black")
     nx.draw(res["graph"], points, width=2, edge_color="red", style="dashed", node_size=0)
-    namefile = "C://Users//git//cpp_unix//lab_2_02//image//" + str(len_sample) + "_pts_" + str(
+    namefile = str(len_sample) + "_pts_" + str(
         circles) + "_circ_" + str(interceptions) + "_interc.pdf"
     plt.savefig(namefile)
     plt.show()
@@ -152,7 +152,7 @@ def triangle_intersection(a, b, c, vertex_array, val):
     return val
 
 
-def TSP_milp(init_graph, circles, cross, plt_show_flag=False, solver_display=False):
+def TSP_milp(init_graph, circles, cross, plt_show_flag=True, solver_display=False):
     n = len(init_graph)
     adjacency_matrix = nx.adjacency_matrix(init_graph, dtype=np.float64).todense()
     adjacency_matrix.sort(axis=1)
@@ -264,14 +264,15 @@ def TSP_milp(init_graph, circles, cross, plt_show_flag=False, solver_display=Fal
     return {'length': res.fun, 'graph': graph_resilt, 'constraints': constraints, 'steps': step}
 
 
-len_sample = 20
+len_sample = 7
+
 points = [(round(rd.randint(0, 1000)), round(rd.randint(0, 1000))) for i in range(len_sample)]
 # TSP_output_milp(points, 4, 5)
 # TSP_output_milp(points, 2, 2)
 # TSP_output_dynamic(points)
 points2 = [(5, 7), (4, 0), (5, 0), (-1, 0), (0, 0), (0, 2), (0, 3), (2.5, 2.5), (0, 1), (1, 0), (2, 0), (2, 1), (1, 2),
            (2, 3), (4, 1), (3, 2), (1, 1), (3, 3), (2, 2), (3, 1), (4, 2)]
-len_sample = len(points2)
-TSP_output_milp(points2, 4, 5)
-TSP_output_milp(points2, 2, 2)
-TSP_output_dynamic(points2)
+len_sample = len(points)
+TSP_output_milp(points, 4, 5)
+#TSP_output_milp(points, 2, 2)
+TSP_output_dynamic(points)
